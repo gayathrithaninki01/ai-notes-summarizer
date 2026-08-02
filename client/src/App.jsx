@@ -59,10 +59,10 @@ function App() {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        "https://ai-notes-summarizer-backend-hih1.onrender.com",
-        formData
-      );
+     const res = await axios.post(
+  "https://ai-notes-summarizer-backend-hih1.onrender.com/upload",
+  formData
+);
 
       setSummary(res.data.summary);
 
