@@ -60,7 +60,7 @@ function App() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/upload",
+        "https://ai-notes-summarizer-backend-hih1.onrender.com",
         formData
       );
 
