@@ -25,7 +25,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     const mode = req.body.mode || "summary";
 
     // Split the PDF into chunks
-    const chunkSize = 3000;
+    const chunkSize = 8000;
     const chunks = [];
 
     for (let i = 0; i < text.length; i += chunkSize) {
@@ -39,7 +39,17 @@ router.post("/", upload.single("file"), async (req, res) => {
 
   console.log(`Summarizing Part ${i + 1} of ${chunks.length}`);
 
-  const partSummary = await summarize(chunks[i], mode);
+ let partSummary;
+
+try {
+  partSummary = await summarize(chunks[i], mode);
+} catch (err) {
+  console.log("Retrying Part", i + 1);
+
+  await new Promise(resolve => setTimeout(resolve, 5000));
+
+  partSummary = await summarize(chunks[i], mode);
+}
 
   finalSummary += `\n\n========== Part ${i + 1} ==========\n\n`;
   finalSummary += partSummary;
@@ -47,7 +57,7 @@ router.post("/", upload.single("file"), async (req, res) => {
   // Wait 15 seconds before processing the next chunk
   if (i < chunks.length - 1) {
     console.log("Waiting 15 seconds...");
-    await new Promise(resolve => setTimeout(resolve, 15000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
   }
 
 }
