@@ -32,7 +32,7 @@ function ChatBox({ darkMode }) {
 
       // Get latest summary
       const summaryRes = await axios.get(
-        "http://localhost:5000/summary",
+        "https://ai-notes-summarizer-backend-hih1.onrender.com/summary",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,6 +48,7 @@ function ChatBox({ darkMode }) {
             text: "Please upload a PDF and generate a summary first.",
           },
         ]);
+
         setQuestion("");
         return;
       }
@@ -56,7 +57,7 @@ function ChatBox({ darkMode }) {
 
       // Ask chatbot
       const res = await axios.post(
-        "http://localhost:5000/chat",
+        "https://ai-notes-summarizer-backend-hih1.onrender.com/chat",
         {
           notes: latestSummary,
           question: question,
@@ -75,7 +76,7 @@ function ChatBox({ darkMode }) {
 
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      console.error(error);
+      console.error("Chat Error:", error);
 
       setMessages((prev) => [
         ...prev,
@@ -104,7 +105,8 @@ function ChatBox({ darkMode }) {
         darkMode ? "bg-gray-800" : "bg-white"
       }`}
     >
-      <div className="flex justify-between items-center mb-5">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-blue-600">
           AI Study Assistant
         </h2>
@@ -118,6 +120,7 @@ function ChatBox({ darkMode }) {
         </button>
       </div>
 
+      {/* Messages */}
       <div
         className={`rounded-xl p-4 h-[450px] overflow-y-auto ${
           darkMode ? "bg-gray-700" : "bg-gray-100"
@@ -155,6 +158,7 @@ function ChatBox({ darkMode }) {
         ))}
       </div>
 
+      {/* Input */}
       <div className="flex gap-3 mt-5">
         <input
           type="text"
