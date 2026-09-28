@@ -96,7 +96,7 @@ Summarize the uploaded notes in simple student-friendly language.
   }
 
   const chatCompletion = await groq.chat.completions.create({
-    model: "openai/gpt-oss-20",
+    model: "openai/gpt-oss-20b",
     messages: [
       {
         role: "system",
